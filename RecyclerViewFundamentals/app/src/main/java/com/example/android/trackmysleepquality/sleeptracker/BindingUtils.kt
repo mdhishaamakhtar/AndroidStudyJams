@@ -8,7 +8,7 @@ import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 
-@BindingAdapter("sleepQualityFormatted")
+@BindingAdapter("sleepDurationFormatted")
 fun TextView.setSleepDurationFormatted(item: SleepNight) {
     text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, context.resources)
 }
