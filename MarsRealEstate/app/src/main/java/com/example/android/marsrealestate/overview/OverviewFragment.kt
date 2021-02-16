@@ -19,14 +19,11 @@ package com.example.android.marsrealestate.overview
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.android.marsrealestate.R
-import com.example.android.marsrealestate.databinding.GridViewItemBinding
+import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
 
 /**
  * This fragment shows the the status of the Mars real-estate web services transaction.
@@ -46,25 +43,19 @@ class OverviewFragment : Fragment() {
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        val binding = FragmentOverviewBinding.inflate(inflater)
+        val binding = FragmentOverviewBinding.inflate(inflater)
 
-        val binding = GridViewItemBinding.inflate(inflater)
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
         // Giving the binding access to the OverviewViewModel
-        binding.viewModel = viewModel
+        val adapter = PhotoGridAdapter()
+
+        binding.photosGrid.adapter = adapter
 
         viewModel.property.observe(viewLifecycleOwner, Observer {
             it?.let {
-                val imgView = binding.marsImage
-                val imgUri = it.img_src.toUri().buildUpon().scheme("https").build()
-                Glide.with(imgView.context)
-                        .load(imgUri)
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.ic_broken_image))
-                        .into(imgView)
+                adapter.submitList(it)
             }
         })
 
