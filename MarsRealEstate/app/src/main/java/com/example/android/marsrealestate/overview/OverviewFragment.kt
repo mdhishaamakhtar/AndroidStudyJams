@@ -59,6 +59,24 @@ class OverviewFragment : Fragment() {
             }
         })
 
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                when (it) {
+                    OverviewViewModel.MarsApiStatus.LOADING -> {
+                        binding.statusImage.visibility = View.VISIBLE
+                        binding.statusImage.setImageResource(R.drawable.loading_animation)
+                    }
+                    OverviewViewModel.MarsApiStatus.ERROR -> {
+                        binding.statusImage.visibility = View.VISIBLE
+                        binding.statusImage.setImageResource(R.drawable.ic_connection_error)
+                    }
+                    OverviewViewModel.MarsApiStatus.DONE -> {
+                        binding.statusImage.visibility = View.GONE
+                    }
+                }
+            }
+        })
+
         setHasOptionsMenu(true)
         return binding.root
     }
